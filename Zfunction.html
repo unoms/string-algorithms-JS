@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Z function</title>
+</head>
+<body>
+	<script>
+		/*
+			Z-фу́нкция от строки S — массив Z, каждый элемент которого Z[i] равен длине наиболее длинного префикса суффикса подстроки, начинающегося с позиции i в строке S, который одновременно является и префиксом всей строки S. 
+
+		*/
+		/**
+		* Represent algorithm for Z function. This is bad one because of O(n^2)
+		* @param{string}
+		* @return{array of integers} - an array of z values for each position
+		*/
+		function Z_bad(string){
+			var z =[];
+			z[0] = 0;
+			for(var i = 1; i < string.length; i++){
+				var j = 0;
+				while((i + j) < string.length && string[i + j] == string[j])
+					j++;
+				z[i] = j;
+			}
+
+			return z;
+		}//End of Z_bad()
+
+
+		//It's a better algorithm because it works O(n)
+		function Z_good(string){
+			var z =[];
+			z[0] = 0;
+			var left = 0, right = 0;
+			for(var i = 1; i < string.length; i++){
+				if( i >= right){
+					var j = 0;
+					while((i + j) < string.length && string[i + j] == string[j]){
+						j++;
+					}
+					left = i;
+					right = i + j;
+					z[i] = j;
+				}else{
+					if(z[i - left] < (right - i)){
+						z[i] = z[i - left];
+					}else{
+						j = right - i;
+						while((i + j) < string.length && string[i + j] == string[j]){
+						j++;
+					}
+					left = i;
+					right = i + j;
+					z[i] = j;
+					}
+				}
+				
+
+			}
+			return z;
+		}
+
+		var z = Z_bad("ABABABACABA");//[ 0, 0, 5, 0, 3, 0, 1, 0, 3, 0, … ]
+		console.log(z);
+
+		var good = Z_good("ABABABACABA");
+		console.log(good);
+
+		var test1 = Z_bad("aabcaabxaaa");
+		var test2 = Z_good("aabcaabxaaa");
+		console.log(test1);
+		console.log(test2);
+
+		
+		var pattern = "aabx";
+		var text = "aabcaabxaaa";
+		//Using Z-function to find a substring
+		console.log(Z_good(pattern + "#" + text));//[ 0, 1, 0, 0, 0, 3, 1, 0, 0, 4, … ]
+		/*
+			pattern.length = 4;
+			We have 4 at a position of 10 so the pattern starts from 10 - 4 - 1 = 5
+			So 5 is te start of our pattern in the text
+	
+		*/
+	</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>KMP algorithm</title>
+</head>
+<body>
+	<script>
+		/*
+			Алгоритм поиска образа в строке или по простому поиск слова или фразы в тексте.
+			Время работы алгоритма линейно зависит от объёма входных данных, то есть разработать асимптотически более эффективный алгоритм невозможно. 
+
+		*/
+
+		function prefix(string){
+			var len = string.length;
+			var p = [];
+			p[0] = 0;
+			for(let i = 1; i < len; i++){
+				var j = p[i-1];
+				while(j > 0 && string[i] !== string[j]){
+					j = p[j - 1];
+				}
+				if(string[i] === string[j]){
+					j++;
+				}
+				p[i] = j;
+			}
+			return p;
+		}//End of prefix function
+
+		// function prefix(string){
+		// 	var len = string.length;
+		// 	var p = [];
+		// 	p[0] = 0; //A prefix from one symbol = 0 by definition
+
+		// 	//indices
+		// 	var i = 1;
+		// 	var j = 0;
+		// 	while(i < len){
+		// 		if(string[i] === string[j]){
+		// 			p[i] = j + 1;
+		// 			i++;
+		// 			j++;
+		// 		}else{
+		// 			if(j > 0){
+		// 				j = p[j];
+		// 			}else{
+		// 				p[i] = 0;
+		// 				i++;
+		// 			}
+		// 		}
+		// 	} 
+		// 	return p;
+		// }//End of prefix function
+
+		/*
+		* Represent a function which check the presence of a substring inside a string
+		* @param{string} - s - a string
+		* @param{string} - sub - a substring
+		* @return{integer} - -1 if there's no a given substring inside a string
+		* or return the index of the beginning the substring in the string
+		**/
+		function findSubstring(s, sub){
+			//Create an array of prefexes 
+			var p = prefix(s);
+			//indices
+			var i = 0, j = 0;
+			while(i < s.length && j < sub.length){
+				if(s[i] === sub[j]){
+					i++;
+					j++;
+				}else{
+					if(j > 0){
+						j = p[j];
+					}else{
+						i++;
+					}
+				}
+			}
+
+			if(j == sub.length){
+				return i - sub.length;
+			}else{
+				return -1;
+			}
+		}
+
+		console.log(prefix("ABACABABACB"))
+
+		console.log(findSubstring("test", "t"));//0
+		console.log(findSubstring("test", "es"));//1
+		console.log(findSubstring("test", "et"));//-1
+		console.log(findSubstring("test", "st"));//2
+		console.log(findSubstring("testa", "a"));//4
+	</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Find Substring</title>
+</head>
+<body>
+	<script>
+
+		/*
+		* Represent a function which checks the presence of a substring inside a string
+		* @param{string} - s - a string
+		* @param{string} - sub - a substring
+		* @return{integer} - -1 if there's no a given substring inside a string
+		* or return the index of the beginning the substring in the string
+		**/
+		function findSubstring (s, sub) {
+			//Loop through the string
+			for(var i = 0; i < (s.length - sub.length + 1); i++){
+				var found = true;
+				//Loop through the substring
+				for(var j = 0; j < sub.length; j++){
+					if(s[i + j] != sub[j]){
+						found = false
+						break;
+					}						
+				}//End of the inner loop	
+
+					//if(j == (sub.length - 1))
+					//	return i;
+					//A version with a flag is a better one because we don't need to 
+					//check inside the inner loop through the if statement
+				if(found)
+					return i;
+			} 
+
+			return -1;
+		}
+
+		console.log(findSubstring("test", "t"));//0
+		console.log(findSubstring("test", "es"));//1
+		console.log(findSubstring("test", "et"));//-1
+		console.log(findSubstring("test", "st"));//2
+		console.log(findSubstring("testa", "a"));//4
+
+	</script>
+</body>
+</html>

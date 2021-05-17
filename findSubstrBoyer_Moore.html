@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> Boyer–Moore Algorithm</title>
+</head>
+<body>
+	
+	<script>
+		/*
+			код, который реализует поиск подстроки, используя эвристику плохого символа. 
+		*/
+
+		/*
+		* Represent a function that makes an array from a given string
+		* @param{string} - s - a string
+		* @return{array} - pos
+		**/
+		function makePos(s){
+			var pos =[];
+			for(var i = 0; i < s.length; i++){
+				pos[s[i]] = i;
+			}
+			return pos;
+		}
+
+		function findSubstring(s, sub){
+			var pos = makePos(s);
+			var i = 0;
+			var sLen = s.length;
+			var subLen = sub.length;
+			while(i <= (sLen + subLen) ){
+				var j = subLen - 1;
+				while(s[i + j] == sub[j]){
+					j--;
+					if(j < 0)
+						return i;
+				}
+				i += Math.max(j - pos[s[i + j]], 1);
+				//i += max(j - pos[S[i + j]], 1)
+			}
+			return -1;
+		}
+
+		console.log(findSubstring("test", "h"));//-1
+		console.log(findSubstring("test", "es"));//1
+		console.log(findSubstring("test", "st"));//2
+		console.log(findSubstring("test", "te"));//0
+		
+
+	</script>
+</body>
+</html>

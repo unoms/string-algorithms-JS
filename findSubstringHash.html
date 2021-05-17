@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Find substring 2</title>
+</head>
+<body>
+	
+	<script>
+		/*
+		* Make a hash from a string
+		* @param{string} - s - a string to be hashed
+		* @param{integer} - max - a max size of the hash
+		* @return{integer} - hash
+		**/
+		var hashString = function(s, max){
+			var hash = 0;
+			for(var i = 0; i < s.length; i++){
+				hash += s[i].charCodeAt(0);
+			}
+
+			return hash % max;
+		};
+
+		/*
+		* Represent a function which check the presence of a substring inside a string
+		* @param{string} - s - a string
+		* @param{string} - sub - a substring
+		* @return{integer} - -1 if there's no a given substring inside a string
+		* or return the index of the beginning the substring in the string
+		**/
+
+		function findSubstring(s, sub){
+				var substringHash = hashString(sub, 35);
+				var substringSize = sub.length;	
+			for(var j = 0; j < (s.length - sub.length + 1); j++){
+					
+				//We need an inner loop only in case the hashes are equal
+				var h = hashString(s.slice(j, j + substringSize), 35);
+				if(h == substringHash){
+					for(var i = 0; i < sub.length; i++){
+						if(s[j + i] != sub[i])
+							break;
+
+					if(i == (sub.length - 1))
+						return j;
+					}
+				}
+			}//outer loop
+
+			return -1;
+		}
+		
+
+		console.log(findSubstring("test", "te"));//0
+		console.log(findSubstring("test", "es"));//1
+		console.log(findSubstring("test", "st"));//2
+		console.log(findSubstring("test", "ts"));//-1
+		console.log(findSubstring("test", "f"));//-1
+	</script>
+</body>
+</html>
